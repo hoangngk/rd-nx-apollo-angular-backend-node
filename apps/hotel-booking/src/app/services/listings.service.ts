@@ -1,7 +1,7 @@
-// import { Observable } from 'rxjs';
+import { map, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { ApolloQueryResult, Observable } from '@apollo/client';
 import { Apollo, gql } from 'apollo-angular';
+import { GetListings, Listing } from '../models/listings.model';
 
 @Injectable({
   providedIn: 'root',
@@ -9,23 +9,25 @@ import { Apollo, gql } from 'apollo-angular';
 export class ListingsService {
   constructor(private apollo: Apollo) {}
 
-  getData(): any {
-    return this.apollo.watchQuery({
-      query: gql`
-        query GetListings {
-          listings {
-            id
-            title
-            image
-            address
-            price
-            numOfGuests
-            numOfBeds
-            numOfBaths
-            rating
+  public getData(): Observable<Listing[]> {
+    return this.apollo
+      .query<GetListings>({
+        query: gql`
+          query GetListings {
+            listings {
+              id
+              title
+              image
+              address
+              price
+              numOfGuests
+              numOfBeds
+              numOfBaths
+              rating
+            }
           }
-        }
-      `,
-    });
+        `,
+      })
+      .pipe(map((result) => (result.data ? result.data.listings : [])));
   }
 }

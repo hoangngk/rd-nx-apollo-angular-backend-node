@@ -6,10 +6,25 @@ import { HttpLink } from 'apollo-angular/http';
 import { InMemoryCache } from '@apollo/client/core';
 import { AppComponent } from './app.component';
 import { ListingsComponent } from './listings/listings.component';
+import { NZ_I18N } from 'ng-zorro-antd/i18n';
+import { en_US } from 'ng-zorro-antd/i18n';
+import { registerLocaleData } from '@angular/common';
+import en from '@angular/common/locales/en';
+import { FormsModule } from '@angular/forms';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { NzListModule } from 'ng-zorro-antd/list';
+
+registerLocaleData(en);
 
 @NgModule({
   declarations: [AppComponent, ListingsComponent],
-  imports: [BrowserModule, HttpClientModule],
+  imports: [
+    BrowserModule,
+    HttpClientModule,
+    FormsModule,
+    BrowserAnimationsModule,
+    NzListModule,
+  ],
   providers: [
     {
       provide: APOLLO_OPTIONS,
@@ -23,6 +38,7 @@ import { ListingsComponent } from './listings/listings.component';
       },
       deps: [HttpLink],
     },
+    { provide: NZ_I18N, useValue: en_US },
   ],
   bootstrap: [AppComponent],
 })
